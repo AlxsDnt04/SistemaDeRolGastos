@@ -1,0 +1,16 @@
+.button-traslucido {
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    color: #fff; /* Text color */
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Semi-transparent border */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-traslucido:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Slightly less transparent on hover */
+    border-color: rgba(255, 255, 255, 0.8); /* More visible border on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
