@@ -28,7 +28,7 @@ formulario.addEventListener("submit", (e) => {
     // crear formulario oculto 
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "../php/datos.php"; 
+    form.action = "datos.php"; 
 
     // Obtener los valores de los campos de texto
     const campos = {
