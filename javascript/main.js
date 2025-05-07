@@ -1,76 +1,105 @@
-//funcion para calcular ingreso
+//FUNCION PARA CALCULAR INGRESOS
 function calcularIngreso() {
-    const sueldo = parseFloat(document.getElementById("sueldo").value);
-    const hora_25 = parseFloat(document.getElementById("hora25").value);
-    const hora_50 = parseFloat(document.getElementById("hora50").value);
-    const hora_100 = parseFloat(document.getElementById("hora100").value);
-    //hora normal
-    const hora_normal = (sueldo/160).toFixed(2);
-    //calculo al 25%
-    const total_hora_25 = (hora_normal * hora_25 * 1.25).toFixed(2);
-    document.getElementById("temp_total_25").value = total_hora_25; // Mostrar el total al 25% en el campo correspondiente
-    //calculos al 50%
-    const total_hora_50 = (hora_normal * hora_50 * 1.5).toFixed(2);
-    document.getElementById("temp_total_50").value = total_hora_50; // Mostrar el total al 50% en el campo correspondiente
-    //calculos al 100%
-    const total_hora_100 = (hora_normal * hora_100 * 2).toFixed(2);
-    document.getElementById("temp_total_100").value = total_hora_100; // Mostrar el total al 100% en el campo correspondiente
-    //calculo total (sueldo + bonos + hora25 + hora50 + hora100)
-    const total_ingresos = (sueldo + parseFloat(total_hora_25) + parseFloat(total_hora_50) + parseFloat(total_hora_100)).toFixed(2);
-    document.getElementById("total_ingresos").value = total_ingresos; // Mostrar el total de ingresos en el campo correspondiente
-    
+  const sueldo = parseFloat(document.getElementById("sueldo").value);
+  const hora_25 = parseFloat(document.getElementById("hora25").value);
+  const hora_50 = parseFloat(document.getElementById("hora50").value);
+  const hora_100 = parseFloat(document.getElementById("hora100").value);
+  //hora normal
+  const hora_normal = parseFloat((sueldo / 160).toFixed(2));
+  //calculo al 25%
+  const total_hora_25 = hora_normal * hora_25 * 1.25;
+  document.getElementById("temp_total_25").value = total_hora_25; // Mostrar el total al 25% en el campo correspondiente
+  //calculos al 50%
+  const total_hora_50 = hora_normal * hora_50 * 1.5;
+  document.getElementById("temp_total_50").value = total_hora_50; // Mostrar el total al 50% en el campo correspondiente
+  //calculos al 100%
+  const total_hora_100 = hora_normal * hora_100 * 2;
+  document.getElementById("temp_total_100").value = total_hora_100; // Mostrar el total al 100% en el campo correspondiente
+  //calculo total (sueldo + bonos + hora25 + hora50 + hora100)
+  const total_ingresos =
+    sueldo + total_hora_25 + total_hora_50 + total_hora_100;
+  document.getElementById("temp_total_ingresos").value = total_ingresos; // Mostrar el total de ingresos en el campo correspondiente
 }
-/* calcular egresos */
+//FUNCION PARA CALCULAR EGRESOS
 function calcularEgresos() {
-    const iess = parseFloat(document.getElementById("iess").value);
-    const multas = parseFloat(document.getElementById("multas").value);
-    const atrasos = parseFloat(document.getElementById("atrasos").value);
-    const alimentacion = parseFloat(document.getElementById("alimentacion").value);
-    const anticipo = parseFloat(document.getElementById("anticipo").value);
-    const otros = parseFloat(document.getElementById("otros").value);
-    //calculo total (iess + multas + atrasos + alimentacion + anticipo + otros)
-    const total_egresos = (iess + multas + atrasos + alimentacion + anticipo + otros).toFixed(2);
-    document.getElementById("total_egresos").value = total_egresos; // Mostrar el total de egresos en el campo correspondiente
+  /* calculo IESS */
+  const sueldo = parseFloat(document.getElementById("sueldo").value);
+  const TotalIess = (sueldo * 0.45) / 100; // Calculo del IESS (4.5% del sueldo)
+  document.getElementById("iess").value = TotalIess; // Mostrar el IESS en el campo correspondiente
+  /* suma egresos */
+  const multas = parseFloat(document.getElementById("multas").value);
+  const atrasos = parseFloat(document.getElementById("atrasos").value);
+  const alimentacion = parseFloat(document.getElementById("alimentacion").value);
+  const anticipo = parseFloat(document.getElementById("anticipo").value);
+  const otros = parseFloat(document.getElementById("otros").value);
+  // Calcular el total de egresos
+  const total_egresos = TotalIess + multas + atrasos + alimentacion + anticipo + otros;
+  document.getElementById("totalEgresos").value = total_egresos; // Mostrar el total de egresos en el campo correspondiente
+}
+//FUNCION PARA CALCULAR EL NETO A PAGAR
+function netoAPagar() {
+  
+  const total_ingresos = parseFloat(document.getElementById("temp_total_ingresos").value);
+  const total_egresos = parseFloat(document.getElementById("totalEgresos").value);
+  // Calcular el total a pagar
+  const total_a_pagar = total_ingresos - total_egresos;
+  document.getElementById("total_a_pagar").value = total_a_pagar; // Mostrar el total a pagar en el campo correspondiente
 }
 
 /* accion del boton submit */
 const formulario = document.getElementById("rolPagos");
 formulario.addEventListener("submit", (e) => {
-    e.preventDefault(); // Evitar el envío del formulario
-    calcularIngreso(); // Llamar a la función para calcular el ingreso
-    // crear formulario oculto 
+  e.preventDefault(); // Evitar el envío del formulario
+  calcularIngreso(); 
+  calcularEgresos();
+  netoAPagar();
+  // crear formulario oculto y enviar los datos al php
     const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "datos.php"; 
-
-    // Obtener los valores de los campos de texto
-    const campos = {
-        /* ingresos */
-        total_25: document.getElementById("temp_total_25").value,
-        total_50: document.getElementById("temp_total_50").value,
-        total_100: document.getElementById("temp_total_100").value,
-        /* total ing */
-        total_ingresos: document.getElementById("total_ingresos").value,
-        /* egresos */
-        iess: document.getElementById("iess").value,
-        multas: document.getElementById("multas").value,
-        atrasos: document.getElementById("atrasos").value,
-        alimentacion: document.getElementById("alimentacion").value,
-        anticipo: document.getElementById("anticipo").value,
-        otros: document.getElementById("otros").value,
-        /* total eng */
-        total_egresos: document.getElementById("total_egresos").value, 
+    form.method = "POST"; 
+    form.action = "datos.php";
+//INGRESOS
+  // Obtener los valores de los campos de texto
+  const campos = {
+    total25: document.getElementById("temp_total_25").value,
+    total50: document.getElementById("temp_total_50").value,
+    total100: document.getElementById("temp_total_100").value,
+    total_ingresos: document.getElementById("temp_total_ingresos").value,
+    };
+  // iteracion para ingresos
+  for (const key in campos) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = campos[key];
+    form.appendChild(input);
+  }
+//EGRESOS
+    // Agregar el campo egresos al formulario
+    const camposEgresos = {
+        iesst: document.getElementById("iess").value,
+        totalEgres: document.getElementById("totalEgresos").value
     }
-
-    for (const key in campos) {
+    // iteracion para egresos
+    for (const key in camposEgresos) {
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
-        input.value = campos[key];
+        input.value = camposEgresos[key];
         form.appendChild(input);
     }
-
-    // imprimir el formulario mediante php
-    document.body.appendChild(form); // Ensure the form is added to the DOM
-    form.submit(); // Submit the form immediately
-}); 
+//TOTAL A PAGAR
+const camposTotal = {
+    total_a_pagar: document.getElementById("total_a_pagar").value,
+  };
+  // iteracion para total a pagar
+  for (const key in camposTotal) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = camposTotal[key];
+    form.appendChild(input);
+}
+  // imprimir el formulario mediante php
+  document.body.appendChild(form); 
+  form.submit(); 
+});
