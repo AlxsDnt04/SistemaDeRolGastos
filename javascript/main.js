@@ -4,6 +4,7 @@ function calcularIngreso() {
   const hora_25 = parseFloat(document.getElementById("hora25").value);
   const hora_50 = parseFloat(document.getElementById("hora50").value);
   const hora_100 = parseFloat(document.getElementById("hora100").value);
+  const bonos = parseFloat(document.getElementById("bonos").value);
   //hora normal
   const hora_normal = parseFloat((sueldo / 160).toFixed(2));
   //calculo al 25%
@@ -17,7 +18,7 @@ function calcularIngreso() {
   document.getElementById("temp_total_100").value = total_hora_100; // Mostrar el total al 100% en el campo correspondiente
   //calculo total (sueldo + bonos + hora25 + hora50 + hora100)
   const total_ingresos =
-    sueldo + total_hora_25 + total_hora_50 + total_hora_100;
+    sueldo + total_hora_25 + total_hora_50 + total_hora_100+ bonos;
   document.getElementById("temp_total_ingresos").value = total_ingresos; // Mostrar el total de ingresos en el campo correspondiente
 }
 //FUNCION PARA CALCULAR EGRESOS
@@ -60,10 +61,21 @@ formulario.addEventListener("submit", (e) => {
 //INGRESOS
   // Obtener los valores de los campos de texto
   const campos = {
+    //datos personales
+    nombre: document.getElementById("nombre").value,
+    apellido: document.getElementById("apellido").value,
+    cedula: document.getElementById("cedula").value,
+    telefono: document.getElementById("telefono").value,
+    //ingresos
     total25: document.getElementById("temp_total_25").value,
     total50: document.getElementById("temp_total_50").value,
     total100: document.getElementById("temp_total_100").value,
     total_ingresos: document.getElementById("temp_total_ingresos").value,
+    // egresos
+    iesst: document.getElementById("iess").value,
+    totalEgres: document.getElementById("totalEgresos").value,
+    //total a pagar
+    total_a_pagar: document.getElementById("total_a_pagar").value
     };
   // iteracion para ingresos
   for (const key in campos) {
@@ -73,32 +85,6 @@ formulario.addEventListener("submit", (e) => {
     input.value = campos[key];
     form.appendChild(input);
   }
-//EGRESOS
-    // Agregar el campo egresos al formulario
-    const camposEgresos = {
-        iesst: document.getElementById("iess").value,
-        totalEgres: document.getElementById("totalEgresos").value
-    }
-    // iteracion para egresos
-    for (const key in camposEgresos) {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = key;
-        input.value = camposEgresos[key];
-        form.appendChild(input);
-    }
-//TOTAL A PAGAR
-const camposTotal = {
-    total_a_pagar: document.getElementById("total_a_pagar").value,
-  };
-  // iteracion para total a pagar
-  for (const key in camposTotal) {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = camposTotal[key];
-    form.appendChild(input);
-}
   // imprimir el formulario mediante php
   document.body.appendChild(form); 
   form.submit(); 
